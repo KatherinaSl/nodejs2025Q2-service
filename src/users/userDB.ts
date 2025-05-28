@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UptadeUserPasswordDto, User } from './user.interface';
+import { CreateUserDto, UpdatePasswordDto, User } from './user.interface';
 import { v4 } from 'uuid';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class UserDB {
     return this.users.get(id);
   }
 
-  updatePassword(user: User, newPass: UptadeUserPasswordDto): User {
+  updatePassword(user: User, newPass: UpdatePasswordDto): User {
     user.password = newPass.newPassword;
     user.version++;
     user.updatedAt = new Date().getTime();

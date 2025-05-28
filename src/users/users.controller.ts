@@ -13,7 +13,7 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
-import { CreateUserDto, UptadeUserPasswordDto, User } from './user.interface';
+import { CreateUserDto, UpdatePasswordDto, User } from './user.interface';
 import { UserDB } from './userDB';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -45,7 +45,7 @@ export class UsersController {
   @Put(':id')
   updateUser(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-    @Body() uptadeUserPasswordDto: UptadeUserPasswordDto,
+    @Body() uptadeUserPasswordDto: UpdatePasswordDto,
   ): User {
     const user = this.userDB.getUser(id);
     if (!user) {

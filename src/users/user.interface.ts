@@ -27,7 +27,7 @@ export class CreateUserDto {
   password: string;
 }
 
-export class UptadeUserPasswordDto {
+export class UpdatePasswordDto {
   @IsString()
   @IsNotEmpty()
   oldPassword: string;
