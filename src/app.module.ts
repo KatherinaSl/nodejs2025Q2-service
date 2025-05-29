@@ -14,6 +14,9 @@ import { AlbumService } from './albums/album.service';
 import { TrackService } from './tracks/track.service';
 import { ArtistService } from './artists/artist.service';
 import { UserService } from './users/user.service';
+import { FavoritesController } from './favorites/favorites.controller';
+import { FavService } from './favorites/favorites.service';
+import { FavoriteDB } from './favorites/favoritesDB';
 
 @Module({
   imports: [],
@@ -23,6 +26,7 @@ import { UserService } from './users/user.service';
     AlbumsController,
     TracksController,
     ArtistsController,
+    FavoritesController,
   ],
   providers: [
     AppService,
@@ -30,10 +34,12 @@ import { UserService } from './users/user.service';
     AlbumService,
     TrackService,
     ArtistService,
+    FavService,
     UserDB,
     AlbumDB,
     TrackDB,
     ArtistDB,
+    FavoriteDB,
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,

@@ -42,18 +42,4 @@ export class TrackDB {
       .filter((track) => track.artistId === artistId)
       .forEach((track) => (track.artistId = null));
   }
-  //   changeTracksArtistId(artistId: string) {
-  //     // this.tracks.forEach((track) => {
-  //     //   if (track.artistId === artistId) {
-  //     //     track.artistId = null;
-  //     //     this.tracks.set(track.id, track);
-  //     //   }
-  //     // });
-  //     const arrayOfTracks = [...this.tracks.values()];
-  //     arrayOfTracks
-  //       .filter((track) => track.artistId === artistId)
-  //       .forEach((track) => (track.artistId = null));
-  //     // track.artistId = null;
-  //     // this.tracks.set(track.id, track);
-  //   }
 }
