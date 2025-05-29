@@ -44,6 +44,6 @@ export class AlbumsController {
   @Delete(':id')
   @HttpCode(204)
   deleteTrack(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    return this.albumService.deleteAlbum(id);
+    this.albumService.deleteAlbum(id);
   }
 }

@@ -2,10 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ArtistDB } from './artistDB';
 import { Artist, ArtistInfoDto } from './artist.interface';
 import { v4 } from 'uuid';
+import { TrackDB } from 'src/tracks/trackDB';
+import { AlbumDB } from 'src/albums/albumDB';
 
 @Injectable()
 export class ArtistService {
-  constructor(private artistDB: ArtistDB) {}
+  constructor(
+    private artistDB: ArtistDB,
+    private trackDB: TrackDB,
+    private albumDB: AlbumDB,
+  ) {}
 
   getAll(): Artist[] {
     return this.artistDB.getArtists();
@@ -49,6 +55,8 @@ export class ArtistService {
       throw new NotFoundException('Artist not found');
     }
 
-    return this.artistDB.deleteArtist(artist);
+    this.artistDB.deleteArtist(artist);
+    this.trackDB.removeArtist(id);
+    this.albumDB.removeArtist(id);
   }
 }

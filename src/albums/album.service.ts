@@ -3,12 +3,14 @@ import { ArtistDB } from 'src/artists/artistDB';
 import { AlbumDB } from './albumDB';
 import { Album, AlbumInfoDto } from './album.interface';
 import { v4 } from 'uuid';
+import { TrackDB } from 'src/tracks/trackDB';
 
 @Injectable()
 export class AlbumService {
   constructor(
     private artistDB: ArtistDB,
     private albumDB: AlbumDB,
+    private trackDB: TrackDB,
   ) {}
 
   create(dto: AlbumInfoDto): Album {
@@ -53,6 +55,7 @@ export class AlbumService {
       throw new NotFoundException('Album not found');
     }
 
-    return this.albumDB.deleteAlbum(id);
+    this.albumDB.deleteAlbum(id);
+    this.trackDB.removeAlbum(id);
   }
 }

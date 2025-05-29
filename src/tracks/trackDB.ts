@@ -27,6 +27,21 @@ export class TrackDB {
     return track;
   }
 
+  deleteTrack(id: string) {
+    this.tracks.delete(id);
+  }
+
+  removeAlbum(albumId: string) {
+    this.getTracks()
+      .filter((track) => track.albumId === albumId)
+      .forEach((track) => (track.albumId = null));
+  }
+
+  removeArtist(artistId: string) {
+    this.getTracks()
+      .filter((track) => track.artistId === artistId)
+      .forEach((track) => (track.artistId = null));
+  }
   //   changeTracksArtistId(artistId: string) {
   //     // this.tracks.forEach((track) => {
   //     //   if (track.artistId === artistId) {

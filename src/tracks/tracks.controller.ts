@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
   ParseUUIDPipe,
   Post,
@@ -39,8 +41,9 @@ export class TracksController {
     return this.trackService.updateTrack(id, uptadeTrackDto);
   }
 
-  //todo delete method
-  //   @Delete(':id')
-  //   @HttpCode(204)
-  //   deleteTrack(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {}
+  @Delete(':id')
+  @HttpCode(204)
+  deleteTrack(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    this.trackService.deleteTrack(id);
+  }
 }

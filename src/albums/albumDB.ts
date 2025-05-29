@@ -30,4 +30,10 @@ export class AlbumDB {
   deleteAlbum(id: string) {
     this.albums.delete(id);
   }
+
+  removeArtist(artistId: string) {
+    this.getAlbums()
+      .filter((album) => album.artistId === artistId)
+      .forEach((album) => (album.artistId = null));
+  }
 }

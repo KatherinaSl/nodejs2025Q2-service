@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export interface Album {
   id: string;
@@ -16,6 +16,6 @@ export class AlbumInfoDto {
   @IsNotEmpty()
   year: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   artistId: string | null;
 }

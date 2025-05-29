@@ -41,8 +41,6 @@ export class ArtistsController {
     return this.artistService.updateArtist(id, uptadeArtistInfoDto);
   }
 
-  // todo should set album.artistId to null after deletion
-  // todo should set track.artistId to null after deletion
   @Delete(':id')
   @HttpCode(204)
   deleteArtist(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
