@@ -4,38 +4,33 @@ import {
   Delete,
   Get,
   HttpCode,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
-import { ArtistDB } from './artistDB';
 import { Artist, ArtistInfoDto } from './artist.interface';
+import { ArtistService } from './artist.service';
 
 @Controller('artist')
 export class ArtistsController {
-  constructor(private artistDB: ArtistDB) {}
+  constructor(private artistService: ArtistService) {}
 
   @Get()
   getAll(): Artist[] {
-    return this.artistDB.getArtists();
+    return this.artistService.getAll();
   }
 
   @Post()
   create(@Body() createArtistDto: ArtistInfoDto): Artist {
-    return this.artistDB.createArtist(createArtistDto);
+    return this.artistService.create(createArtistDto);
   }
 
   @Get(':id')
   getOneArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Artist {
-    const artist = this.artistDB.getArtist(id);
-    if (!artist) {
-      throw new NotFoundException('Artist not found');
-    }
-    return artist;
+    return this.artistService.getArtist(id);
   }
 
   @Put(':id')
@@ -43,20 +38,14 @@ export class ArtistsController {
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() uptadeArtistInfoDto: ArtistInfoDto,
   ): Artist {
-    const artist = this.artistDB.getArtist(id);
-    if (!artist) {
-      throw new NotFoundException('Artist not found');
-    }
-    return this.artistDB.updateArtistInfo(artist, uptadeArtistInfoDto);
+    return this.artistService.updateArtist(id, uptadeArtistInfoDto);
   }
 
+  // todo should set album.artistId to null after deletion
+  // todo should set track.artistId to null after deletion
   @Delete(':id')
   @HttpCode(204)
   deleteArtist(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    const artist = this.artistDB.getArtist(id);
-    if (!artist) {
-      throw new NotFoundException('Artist not found');
-    }
-    this.artistDB.deleteArtist(artist);
+    this.artistService.deleteArtist(id);
   }
 }

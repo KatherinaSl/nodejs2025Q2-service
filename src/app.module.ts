@@ -6,13 +6,33 @@ import { UserDB } from './users/userDB';
 import { ArtistsController } from './artists/artists.controller';
 import { ArtistDB } from './artists/artistDB';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TracksController } from './tracks/tracks.controller';
+import { TrackDB } from './tracks/trackDB';
+import { AlbumDB } from './albums/albumDB';
+import { AlbumsController } from './albums/album.controller';
+import { AlbumService } from './albums/album.service';
+import { TrackService } from './tracks/track.service';
+import { ArtistService } from './artists/artist.service';
+import { UserService } from './users/user.service';
 
 @Module({
   imports: [],
-  controllers: [AppController, UsersController, ArtistsController],
+  controllers: [
+    AppController,
+    UsersController,
+    AlbumsController,
+    TracksController,
+    ArtistsController,
+  ],
   providers: [
     AppService,
+    UserService,
+    AlbumService,
+    TrackService,
+    ArtistService,
     UserDB,
+    AlbumDB,
+    TrackDB,
     ArtistDB,
     {
       provide: APP_INTERCEPTOR,

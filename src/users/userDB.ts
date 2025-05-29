@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdatePasswordDto, User } from './user.interface';
-import { v4 } from 'uuid';
+import { User } from './user.interface';
 
 @Injectable()
 export class UserDB {
@@ -14,29 +13,16 @@ export class UserDB {
     return [...this.users.values()];
   }
 
-  createUser(creds: CreateUserDto): User {
-    const newUser = new User({
-      id: v4(),
-      login: creds.login,
-      password: creds.password,
-      version: 1,
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
-    });
-
-    this.users.set(newUser.id, newUser);
-    return newUser;
+  createUser(user: User): User {
+    this.users.set(user.id, user);
+    return user;
   }
 
   getUser(id: string): User {
     return this.users.get(id);
   }
 
-  updatePassword(user: User, newPass: UpdatePasswordDto): User {
-    user.password = newPass.newPassword;
-    user.version++;
-    user.updatedAt = new Date().getTime();
-
+  updatePassword(user: User): User {
     this.users.set(user.id, user);
     return user;
   }
