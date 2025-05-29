@@ -27,7 +27,7 @@ export class ArtistService {
     return this.artistDB.createArtist(newArtist);
   }
 
-  getArtist(id: string): Artist {
+  private checkArtistExists(id: string): Artist {
     const artist = this.artistDB.getArtist(id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
@@ -35,11 +35,12 @@ export class ArtistService {
     return artist;
   }
 
+  getArtist(id: string): Artist {
+    return this.checkArtistExists(id);
+  }
+
   updateArtist(id: string, dto: ArtistInfoDto): Artist {
-    const artist = this.artistDB.getArtist(id);
-    if (!artist) {
-      throw new NotFoundException('Artist not found');
-    }
+    const artist = this.checkArtistExists(id);
 
     const updatedArtist = {
       ...artist,
@@ -50,10 +51,7 @@ export class ArtistService {
   }
 
   deleteArtist(id: string) {
-    const artist = this.artistDB.getArtist(id);
-    if (!artist) {
-      throw new NotFoundException('Artist not found');
-    }
+    const artist = this.checkArtistExists(id);
 
     this.artistDB.deleteArtist(artist);
     this.trackDB.removeArtist(id);

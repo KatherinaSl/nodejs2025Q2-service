@@ -28,7 +28,7 @@ export class UserService {
     return this.userDB.createUser(newUser);
   }
 
-  getUser(id: string): User {
+  private checkUserExists(id: string): User {
     const user = this.userDB.getUser(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -36,11 +36,12 @@ export class UserService {
     return user;
   }
 
+  getUser(id: string): User {
+    return this.checkUserExists(id);
+  }
+
   updatePassword(id: string, dto: UpdatePasswordDto) {
-    const user = this.userDB.getUser(id);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    const user = this.checkUserExists(id);
 
     if (user.password !== dto.oldPassword) {
       throw new ForbiddenException('Old password is wrong');
@@ -54,11 +55,7 @@ export class UserService {
   }
 
   deleteUser(id: string) {
-    const user = this.userDB.getUser(id);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    this.userDB.deleteUser(user);
+    this.checkUserExists(id);
+    this.userDB.deleteUser(id);
   }
 }

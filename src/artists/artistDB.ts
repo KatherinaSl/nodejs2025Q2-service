@@ -10,6 +10,7 @@ export class ArtistDB {
     this.artists = new Map();
   }
 
+  //todo
   isValidArtist(id: string): boolean {
     return this.artists.has(id);
   }
@@ -35,6 +36,5 @@ export class ArtistDB {
 
   deleteArtist(artist: Artist) {
     this.artists.delete(artist.id);
-    // this.trackDB.changeTracksArtistId(artist.id);
   }
 }

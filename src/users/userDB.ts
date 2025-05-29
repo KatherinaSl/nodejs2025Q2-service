@@ -27,7 +27,7 @@ export class UserDB {
     return user;
   }
 
-  deleteUser(user: User) {
-    this.users.delete(user.id);
+  deleteUser(id: string) {
+    this.users.delete(id);
   }
 }

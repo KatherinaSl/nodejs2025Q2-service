@@ -2,14 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TrackDB } from './trackDB';
 import { TrackInfoDto, Track } from './track.interface';
 import { v4 } from 'uuid';
-import { AlbumDB } from 'src/albums/albumDB';
 
 @Injectable()
 export class TrackService {
-  constructor(
-    private trackDB: TrackDB,
-    private albumDB: AlbumDB,
-  ) {}
+  constructor(private trackDB: TrackDB) {}
 
   getAll(): Track[] {
     return this.trackDB.getTracks();
@@ -26,7 +22,7 @@ export class TrackService {
     return this.trackDB.createTrack(newTrack);
   }
 
-  getTrack(id: string): Track {
+  private checkTrackExists(id: string): Track {
     const track = this.trackDB.getTrack(id);
     if (!track) {
       throw new NotFoundException('Track not found');
@@ -34,11 +30,12 @@ export class TrackService {
     return track;
   }
 
+  getTrack(id: string): Track {
+    return this.checkTrackExists(id);
+  }
+
   updateTrack(id: string, dto: TrackInfoDto): Track {
-    const track = this.trackDB.getTrack(id);
-    if (!track) {
-      throw new NotFoundException('Track not found');
-    }
+    const track = this.checkTrackExists(id);
 
     const updatedTrack = {
       ...track,
@@ -49,11 +46,7 @@ export class TrackService {
   }
 
   deleteTrack(id: string) {
-    const track = this.trackDB.getTrack(id);
-    if (!track) {
-      throw new NotFoundException('Track not found');
-    }
-
+    this.checkTrackExists(id);
     this.trackDB.deleteTrack(id);
   }
 }
