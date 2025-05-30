@@ -3,7 +3,7 @@ import { Artist } from '../artists/artist.interface';
 import { Track } from '../tracks/track.interface';
 
 export interface Favorites {
-  artists: string[]; // favorite artists ids
+  artists: string[];
   albums: string[];
   tracks: string[];
 }

@@ -29,4 +29,26 @@ export class FavoritesController {
   deleteTrack(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     this.favService.deleteTrack(id);
   }
+
+  @Post('album/:id')
+  addAlbum(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    this.favService.addAlbum(id);
+  }
+
+  @Delete('album/:id')
+  @HttpCode(204)
+  deleteAlbum(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    this.favService.deleteAlbum(id);
+  }
+
+  @Post('artist/:id')
+  addArtist(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    this.favService.addArtist(id);
+  }
+
+  @Delete('artist/:id')
+  @HttpCode(204)
+  deleteArtist(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    this.favService.deleteArtist(id);
+  }
 }

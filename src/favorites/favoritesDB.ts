@@ -27,6 +27,30 @@ export class FavoriteDB {
 
   deleteTrack(trackId: string) {
     const index = this.tracks.indexOf(trackId);
-    this.tracks.splice(index, 1);
+    if (index !== -1) {
+      this.tracks.splice(index, 1);
+    }
+  }
+
+  addAlbum(albumId: string) {
+    this.albums.push(albumId);
+  }
+
+  deleteAlbum(albumId: string) {
+    const index = this.albums.indexOf(albumId);
+    if (index !== -1) {
+      this.albums.splice(index, 1);
+    }
+  }
+
+  addArtist(artistId: string) {
+    this.artists.push(artistId);
+  }
+
+  deleteArtist(artistId: string) {
+    const index = this.artists.indexOf(artistId);
+    if (index !== -1) {
+      this.artists.splice(index, 1);
+    }
   }
 }

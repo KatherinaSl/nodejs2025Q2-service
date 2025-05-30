@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TrackDB } from './trackDB';
 import { TrackInfoDto, Track } from './track.interface';
 import { v4 } from 'uuid';
+import { FavService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class TrackService {
-  constructor(private trackDB: TrackDB) {}
+  constructor(
+    private trackDB: TrackDB,
+    private favService: FavService,
+  ) {}
 
   getAll(): Track[] {
     return this.trackDB.getTracks();
@@ -48,5 +52,6 @@ export class TrackService {
   deleteTrack(id: string) {
     this.checkTrackExists(id);
     this.trackDB.deleteTrack(id);
+    this.favService.removeTrackIdFromFavs(id);
   }
 }

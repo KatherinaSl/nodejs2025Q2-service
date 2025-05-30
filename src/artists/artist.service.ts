@@ -4,6 +4,7 @@ import { Artist, ArtistInfoDto } from './artist.interface';
 import { v4 } from 'uuid';
 import { TrackDB } from 'src/tracks/trackDB';
 import { AlbumDB } from 'src/albums/albumDB';
+import { FavService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class ArtistService {
@@ -11,6 +12,7 @@ export class ArtistService {
     private artistDB: ArtistDB,
     private trackDB: TrackDB,
     private albumDB: AlbumDB,
+    private favService: FavService,
   ) {}
 
   getAll(): Artist[] {
@@ -56,5 +58,6 @@ export class ArtistService {
     this.artistDB.deleteArtist(artist);
     this.trackDB.removeArtist(id);
     this.albumDB.removeArtist(id);
+    this.favService.removeArtistIdFromFavs(id);
   }
 }

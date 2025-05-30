@@ -3,12 +3,14 @@ import { AlbumDB } from './albumDB';
 import { Album, AlbumInfoDto } from './album.interface';
 import { v4 } from 'uuid';
 import { TrackDB } from 'src/tracks/trackDB';
+import { FavService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class AlbumService {
   constructor(
     private albumDB: AlbumDB,
     private trackDB: TrackDB,
+    private favService: FavService,
   ) {}
 
   create(dto: AlbumInfoDto): Album {
@@ -53,5 +55,6 @@ export class AlbumService {
 
     this.albumDB.deleteAlbum(id);
     this.trackDB.removeAlbum(id);
+    this.favService.removeAlbumIdFromFavs(id);
   }
 }

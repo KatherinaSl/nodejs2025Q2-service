@@ -10,11 +10,6 @@ export class ArtistDB {
     this.artists = new Map();
   }
 
-  //todo
-  isValidArtist(id: string): boolean {
-    return this.artists.has(id);
-  }
-
   getArtists(): Artist[] {
     return [...this.artists.values()];
   }
