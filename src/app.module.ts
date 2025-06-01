@@ -1,6 +1,4 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-// import { AppController } from './app.controller';
-// import { AppService } from './app.service';
 import { UsersController } from './users/users.controller';
 import { UserDB } from './users/userDB';
 import { ArtistsController } from './artists/artists.controller';
@@ -21,7 +19,6 @@ import { FavoriteDB } from './favorites/favoritesDB';
 @Module({
   imports: [],
   controllers: [
-    // AppController,
     UsersController,
     AlbumsController,
     TracksController,
@@ -29,7 +26,6 @@ import { FavoriteDB } from './favorites/favoritesDB';
     FavoritesController,
   ],
   providers: [
-    // AppService,
     UserService,
     AlbumService,
     TrackService,
