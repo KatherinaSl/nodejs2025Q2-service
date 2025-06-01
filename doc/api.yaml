@@ -4,9 +4,6 @@ info:
   description: Home music library service
   version: 1.0.0
 
-servers:
-  - url: /api
-
 components:
   schemas:
     User:
@@ -104,16 +101,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Track'
-  responses:
-    UnauthorizedError:
-      description: Access token is missing or invalid
 paths:
   /user:
     get:
       tags:
         - Users
       summary: Get all users
-      description: Gets all users
+      description: Get all users
       responses:
         200:
           description: Successful operation

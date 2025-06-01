@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import * as yaml from 'js-yaml';
 import * as swaggerUi from 'swagger-ui-express';
 import { join } from 'node:path';
+import 'dotenv/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

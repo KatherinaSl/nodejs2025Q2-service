@@ -1,12 +1,11 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Artist } from './artist.interface';
-import { TrackDB } from 'src/tracks/trackDB';
 
 @Injectable()
 export class ArtistDB {
   private artists: Map<string, Artist>;
 
-  constructor(@Inject(forwardRef(() => TrackDB)) private trackDB: TrackDB) {
+  constructor() {
     this.artists = new Map();
   }
 
