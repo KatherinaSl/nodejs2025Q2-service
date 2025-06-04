@@ -1,5 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.interface';
+import { User, UserDto } from './user.interface';
+import { PrismaClient } from 'generated/prisma/client';
+
+const prisma = new PrismaClient({
+  omit: {
+    user: {
+      password: true,
+    },
+  },
+});
+
+// const prisma = new PrismaClient();
 
 @Injectable()
 export class UserDB {
@@ -9,25 +20,53 @@ export class UserDB {
     this.users = new Map();
   }
 
-  getUsers(): User[] {
-    return [...this.users.values()];
+  async getUsers(): Promise<UserDto[]> {
+    return await prisma.user.findMany();
+    // return [...this.users.values()];
   }
 
-  createUser(user: User): User {
-    this.users.set(user.id, user);
-    return user;
+  async createUser(user: User): Promise<UserDto> {
+    // this.users.set(user.id, user);
+    // return user;
+    return await prisma.user.create({
+      data: user,
+    });
   }
 
-  getUser(id: string): User {
-    return this.users.get(id);
+  async getUser(id: string): Promise<UserDto> {
+    // return this.users.get(id);
+    return await prisma.user.findUnique({
+      where: { id },
+    });
   }
 
-  updatePassword(user: User): User {
-    this.users.set(user.id, user);
-    return user;
+  async getUserWithPass(id: string): Promise<User> {
+    // return this.users.get(id);
+    return await prisma.user.findUnique({
+      select: {
+        id: true,
+        login: true,
+        password: true,
+        version: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      where: { id },
+    });
   }
 
-  deleteUser(id: string) {
-    this.users.delete(id);
+  async updateUser(user: User): Promise<UserDto> {
+    // this.users.set(user.id, user);
+    return await prisma.user.update({
+      where: { id: user.id },
+      data: user,
+    });
+  }
+
+  async deleteUser(id: string) {
+    // this.users.delete(id);
+    return prisma.user.delete({
+      where: { id },
+    });
   }
 }

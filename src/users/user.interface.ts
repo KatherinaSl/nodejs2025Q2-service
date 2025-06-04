@@ -17,6 +17,8 @@ export class User {
   }
 }
 
+export type UserDto = Omit<User, 'password'>;
+
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()

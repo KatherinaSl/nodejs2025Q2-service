@@ -13,6 +13,10 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 
+  BigInt.prototype['toJSON'] = function () {
+    return this.toString();
+  };
+
   const projectFolder = process.cwd();
   const yamlPath = join(projectFolder, 'doc', 'api.yaml');
   const fileContents = readFileSync(yamlPath, 'utf8');

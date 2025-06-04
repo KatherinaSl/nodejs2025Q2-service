@@ -4,58 +4,72 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UserDB } from './userDB';
-import { CreateUserDto, UpdatePasswordDto, User } from './user.interface';
+import {
+  CreateUserDto,
+  UpdatePasswordDto,
+  User,
+  UserDto,
+} from './user.interface';
 import { v4 } from 'uuid';
 
 @Injectable()
 export class UserService {
   constructor(private userDB: UserDB) {}
 
-  getAll(): User[] {
+  getAll(): Promise<UserDto[]> {
     return this.userDB.getUsers();
   }
 
-  create(creds: CreateUserDto): User {
+  create(creds: CreateUserDto): Promise<UserDto> {
+    const now = Date.now();
+    const currentTime = Math.floor(now / 1000);
     const newUser = new User({
       id: v4(),
       login: creds.login,
       password: creds.password,
       version: 1,
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
+      createdAt: currentTime,
+      updatedAt: currentTime,
     });
 
     return this.userDB.createUser(newUser);
   }
 
-  private checkUserExists(id: string): User {
-    const user = this.userDB.getUser(id);
+  private async checkUserExists(id: string): Promise<UserDto> {
+    const user = await this.userDB.getUser(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
     return user;
   }
 
-  getUser(id: string): User {
+  getUser(id: string): Promise<UserDto> {
     return this.checkUserExists(id);
   }
 
-  updatePassword(id: string, dto: UpdatePasswordDto) {
-    const user = this.checkUserExists(id);
+  async updatePassword(id: string, dto: UpdatePasswordDto) {
+    // const user = await this.checkUserExists(id);
+    const user = await this.userDB.getUserWithPass(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     if (user.password !== dto.oldPassword) {
       throw new ForbiddenException('Old password is wrong');
     }
 
+    const now = Date.now();
+    const currentTime = Math.floor(now / 1000);
+
     user.password = dto.newPassword;
     user.version++;
-    user.updatedAt = new Date().getTime();
+    user.updatedAt = currentTime + 1;
 
-    return this.userDB.updatePassword(user);
+    return this.userDB.updateUser(user);
   }
 
-  deleteUser(id: string) {
-    this.checkUserExists(id);
-    this.userDB.deleteUser(id);
+  async deleteUser(id: string) {
+    await this.checkUserExists(id);
+    await this.userDB.deleteUser(id);
   }
 }
