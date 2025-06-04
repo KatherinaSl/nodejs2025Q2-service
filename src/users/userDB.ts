@@ -10,8 +10,6 @@ const prisma = new PrismaClient({
   },
 });
 
-// const prisma = new PrismaClient();
-
 @Injectable()
 export class UserDB {
   private users: Map<string, User>;
@@ -22,26 +20,21 @@ export class UserDB {
 
   async getUsers(): Promise<UserDto[]> {
     return await prisma.user.findMany();
-    // return [...this.users.values()];
   }
 
   async createUser(user: User): Promise<UserDto> {
-    // this.users.set(user.id, user);
-    // return user;
     return await prisma.user.create({
       data: user,
     });
   }
 
   async getUser(id: string): Promise<UserDto> {
-    // return this.users.get(id);
     return await prisma.user.findUnique({
       where: { id },
     });
   }
 
   async getUserWithPass(id: string): Promise<User> {
-    // return this.users.get(id);
     return await prisma.user.findUnique({
       select: {
         id: true,
@@ -56,7 +49,6 @@ export class UserDB {
   }
 
   async updateUser(user: User): Promise<UserDto> {
-    // this.users.set(user.id, user);
     return await prisma.user.update({
       where: { id: user.id },
       data: user,
@@ -64,7 +56,6 @@ export class UserDB {
   }
 
   async deleteUser(id: string) {
-    // this.users.delete(id);
     return prisma.user.delete({
       where: { id },
     });

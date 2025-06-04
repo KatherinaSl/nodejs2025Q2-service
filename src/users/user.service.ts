@@ -48,7 +48,6 @@ export class UserService {
   }
 
   async updatePassword(id: string, dto: UpdatePasswordDto) {
-    // const user = await this.checkUserExists(id);
     const user = await this.userDB.getUserWithPass(id);
     if (!user) {
       throw new NotFoundException('User not found');
