@@ -17,19 +17,19 @@ export class ArtistsController {
   constructor(private artistService: ArtistService) {}
 
   @Get()
-  getAll(): Artist[] {
+  getAll(): Promise<Artist[]> {
     return this.artistService.getAll();
   }
 
   @Post()
-  create(@Body() createArtistDto: ArtistInfoDto): Artist {
+  create(@Body() createArtistDto: ArtistInfoDto): Promise<Artist> {
     return this.artistService.create(createArtistDto);
   }
 
   @Get(':id')
   getOneArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): Artist {
+  ): Promise<Artist> {
     return this.artistService.getArtist(id);
   }
 
@@ -37,13 +37,15 @@ export class ArtistsController {
   updateArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() uptadeArtistInfoDto: ArtistInfoDto,
-  ): Artist {
+  ): Promise<Artist> {
     return this.artistService.updateArtist(id, uptadeArtistInfoDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  deleteArtist(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    this.artistService.deleteArtist(id);
+  async deleteArtist(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    await this.artistService.deleteArtist(id);
   }
 }

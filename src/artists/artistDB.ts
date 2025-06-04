@@ -1,34 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { Artist } from './artist.interface';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ArtistDB {
-  private artists: Map<string, Artist>;
+  constructor(private prisma: PrismaService) {}
 
-  constructor() {
-    this.artists = new Map();
+  async getArtists(): Promise<Artist[]> {
+    return await this.prisma.artist.findMany();
   }
 
-  getArtists(): Artist[] {
-    return [...this.artists.values()];
+  async createArtist(artist: Artist): Promise<Artist> {
+    return await this.prisma.artist.create({
+      data: artist,
+    });
   }
 
-  createArtist(artist: Artist): Artist {
-    this.artists.set(artist.id, artist);
-
-    return artist;
+  async getArtist(id: string): Promise<Artist> {
+    return await this.prisma.artist.findUnique({
+      where: { id },
+    });
   }
 
-  getArtist(id: string): Artist {
-    return this.artists.get(id);
+  async updateArtist(artist: Artist): Promise<Artist> {
+    return await this.prisma.artist.update({
+      where: { id: artist.id },
+      data: artist,
+    });
   }
 
-  updateArtist(artist: Artist): Artist {
-    this.artists.set(artist.id, artist);
-    return artist;
-  }
-
-  deleteArtist(artist: Artist) {
-    this.artists.delete(artist.id);
+  async deleteArtist(artist: Artist) {
+    return await this.prisma.artist.delete({
+      where: { id: artist.id },
+    });
   }
 }

@@ -1,45 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { Track } from './track.interface';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TrackDB {
-  private tracks: Map<string, Track>;
+  constructor(private prisma: PrismaService) {}
 
-  constructor() {
-    this.tracks = new Map();
+  async getTracks(): Promise<Track[]> {
+    return await this.prisma.track.findMany();
   }
 
-  getTracks(): Track[] {
-    return [...this.tracks.values()];
+  async createTrack(track: Track): Promise<Track> {
+    return await this.prisma.track.create({
+      data: track,
+    });
   }
 
-  createTrack(track: Track): Track {
-    this.tracks.set(track.id, track);
-    return track;
+  async getTrack(id: string): Promise<Track> {
+    return await this.prisma.track.findUnique({
+      where: { id },
+    });
   }
 
-  getTrack(id: string): Track {
-    return this.tracks.get(id);
+  async updateTrack(track: Track): Promise<Track> {
+    return await this.prisma.track.update({
+      where: { id: track.id },
+      data: track,
+    });
   }
 
-  updateTrack(track: Track): Track {
-    this.tracks.set(track.id, track);
-    return track;
-  }
-
-  deleteTrack(id: string) {
-    this.tracks.delete(id);
-  }
-
-  removeAlbum(albumId: string) {
-    this.getTracks()
-      .filter((track) => track.albumId === albumId)
-      .forEach((track) => (track.albumId = null));
-  }
-
-  removeArtist(artistId: string) {
-    this.getTracks()
-      .filter((track) => track.artistId === artistId)
-      .forEach((track) => (track.artistId = null));
+  async deleteTrack(id: string) {
+    return await this.prisma.track.delete({
+      where: { id },
+    });
   }
 }

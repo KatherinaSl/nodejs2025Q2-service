@@ -17,19 +17,19 @@ export class TracksController {
   constructor(private trackService: TrackService) {}
 
   @Get()
-  getAll(): Track[] {
+  getAll(): Promise<Track[]> {
     return this.trackService.getAll();
   }
 
   @Post()
-  create(@Body() createTrackDto: TrackInfoDto): Track {
+  create(@Body() createTrackDto: TrackInfoDto): Promise<Track> {
     return this.trackService.create(createTrackDto);
   }
 
   @Get(':id')
   getOneTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): Track {
+  ): Promise<Track> {
     return this.trackService.getTrack(id);
   }
 
@@ -37,13 +37,15 @@ export class TracksController {
   updateTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() uptadeTrackDto: TrackInfoDto,
-  ): Track {
+  ): Promise<Track> {
     return this.trackService.updateTrack(id, uptadeTrackDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  deleteTrack(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    this.trackService.deleteTrack(id);
+  async deleteTrack(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    await this.trackService.deleteTrack(id);
   }
 }

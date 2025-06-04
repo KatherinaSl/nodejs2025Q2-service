@@ -1,39 +1,46 @@
 import { Injectable } from '@nestjs/common';
 import { Album } from './album.interface';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AlbumDB {
-  private albums: Map<string, Album>;
+  constructor(private prisma: PrismaService) {}
 
-  constructor() {
-    this.albums = new Map();
+  async getAlbums(): Promise<Album[]> {
+    return await this.prisma.album.findMany();
   }
 
-  getAlbums(): Album[] {
-    return [...this.albums.values()];
+  async createAlbum(album: Album): Promise<Album> {
+    return await this.prisma.album.create({
+      data: album,
+    });
   }
 
-  createAlbum(album: Album): Album {
-    this.albums.set(album.id, album);
-    return album;
+  async getAlbum(id: string): Promise<Album> {
+    return await this.prisma.album.findUnique({
+      where: { id },
+    });
   }
 
-  getAlbum(id: string): Album {
-    return this.albums.get(id);
+  async updateAlbum(album: Album): Promise<Album> {
+    return await this.prisma.album.update({
+      where: { id: album.id },
+      data: album,
+    });
   }
 
-  updateAlbum(album: Album): Album {
-    this.albums.set(album.id, album);
-    return album;
+  async deleteAlbum(id: string) {
+    return await this.prisma.album.delete({
+      where: { id },
+    });
   }
 
-  deleteAlbum(id: string) {
-    this.albums.delete(id);
-  }
-
-  removeArtist(artistId: string) {
-    this.getAlbums()
-      .filter((album) => album.artistId === artistId)
-      .forEach((album) => (album.artistId = null));
+  async removeArtist(artistId: string) {
+    this.prisma.album.updateMany({
+      where: { artistId },
+      data: {
+        artistId: null,
+      },
+    });
   }
 }

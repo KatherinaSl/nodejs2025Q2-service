@@ -2,24 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ArtistDB } from './artistDB';
 import { Artist, ArtistInfoDto } from './artist.interface';
 import { v4 } from 'uuid';
-import { TrackDB } from 'src/tracks/trackDB';
-import { AlbumDB } from 'src/albums/albumDB';
-import { FavService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class ArtistService {
-  constructor(
-    private artistDB: ArtistDB,
-    private trackDB: TrackDB,
-    private albumDB: AlbumDB,
-    private favService: FavService,
-  ) {}
+  constructor(private artistDB: ArtistDB) {}
 
-  getAll(): Artist[] {
+  getAll(): Promise<Artist[]> {
     return this.artistDB.getArtists();
   }
 
-  create(dto: ArtistInfoDto): Artist {
+  create(dto: ArtistInfoDto): Promise<Artist> {
     const newArtist = {
       id: v4(),
       name: dto.name,
@@ -29,20 +21,20 @@ export class ArtistService {
     return this.artistDB.createArtist(newArtist);
   }
 
-  private checkArtistExists(id: string): Artist {
-    const artist = this.artistDB.getArtist(id);
+  private async checkArtistExists(id: string): Promise<Artist> {
+    const artist = await this.artistDB.getArtist(id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
     return artist;
   }
 
-  getArtist(id: string): Artist {
+  getArtist(id: string): Promise<Artist> {
     return this.checkArtistExists(id);
   }
 
-  updateArtist(id: string, dto: ArtistInfoDto): Artist {
-    const artist = this.checkArtistExists(id);
+  async updateArtist(id: string, dto: ArtistInfoDto): Promise<Artist> {
+    const artist = await this.checkArtistExists(id);
 
     const updatedArtist = {
       ...artist,
@@ -52,12 +44,8 @@ export class ArtistService {
     return this.artistDB.updateArtist(updatedArtist);
   }
 
-  deleteArtist(id: string) {
-    const artist = this.checkArtistExists(id);
-
-    this.artistDB.deleteArtist(artist);
-    this.trackDB.removeArtist(id);
-    this.albumDB.removeArtist(id);
-    this.favService.removeArtistIdFromFavs(id);
+  async deleteArtist(id: string) {
+    const artist = await this.checkArtistExists(id);
+    await this.artistDB.deleteArtist(artist);
   }
 }

@@ -12,12 +12,6 @@ const prisma = new PrismaClient({
 
 @Injectable()
 export class UserDB {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
-  }
-
   async getUsers(): Promise<UserDto[]> {
     return await prisma.user.findMany();
   }
@@ -56,7 +50,7 @@ export class UserDB {
   }
 
   async deleteUser(id: string) {
-    return prisma.user.delete({
+    return await prisma.user.delete({
       where: { id },
     });
   }

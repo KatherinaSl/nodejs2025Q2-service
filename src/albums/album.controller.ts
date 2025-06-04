@@ -17,19 +17,19 @@ export class AlbumsController {
   constructor(private albumService: AlbumService) {}
 
   @Get()
-  getAll(): Album[] {
+  getAll(): Promise<Album[]> {
     return this.albumService.getAll();
   }
 
   @Post()
-  create(@Body() createAlbumDto: AlbumInfoDto): Album {
+  create(@Body() createAlbumDto: AlbumInfoDto): Promise<Album> {
     return this.albumService.create(createAlbumDto);
   }
 
   @Get(':id')
   getOneAlbum(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): Album {
+  ): Promise<Album> {
     return this.albumService.getAlbum(id);
   }
 
@@ -37,13 +37,15 @@ export class AlbumsController {
   updateTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() uptadeAlbumDto: AlbumInfoDto,
-  ): Album {
+  ): Promise<Album> {
     return this.albumService.updateAlbum(id, uptadeAlbumDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  deleteTrack(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    this.albumService.deleteAlbum(id);
+  async deleteTrack(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    await this.albumService.deleteAlbum(id);
   }
 }
