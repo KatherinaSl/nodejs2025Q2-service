@@ -5,9 +5,10 @@ import { PrismaService } from './prisma/prisma.service';
 import { TrackModule } from './tracks/track.module';
 import { ArtistModule } from './artists/artist.module';
 import { AlbumModule } from './albums/album.module';
+import { FavsModule } from './favorites/favorites.module';
 
 @Module({
-  imports: [UserModule, TrackModule, ArtistModule, AlbumModule],
+  imports: [UserModule, TrackModule, ArtistModule, AlbumModule, FavsModule],
   controllers: [],
   providers: [
     PrismaService,
