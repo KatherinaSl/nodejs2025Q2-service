@@ -13,6 +13,11 @@ services:
     depends_on:
       - postgres_db
     restart: always
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /usr/src/app/src
   postgres_db:
     hostname: postgres_db
     container_name: postgres_db
@@ -29,6 +34,7 @@ services:
       - POSTGRES_HOST=${POSTGRES_HOST}
     volumes:
       - postgres:/var/lib/postgresql/data
+      - postgres-logs:/var/log/postgresql
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
 networks:
@@ -36,3 +42,4 @@ networks:
     driver: bridge
 volumes:
   postgres:
+  postgres-logs:
