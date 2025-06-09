@@ -17,7 +17,7 @@ services:
       watch:
         - action: sync
           path: ./src
-          target: /usr/src/app/src
+          target: /app/src
   postgres_db:
     hostname: postgres_db
     container_name: postgres_db
