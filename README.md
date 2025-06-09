@@ -5,6 +5,10 @@
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
+### Application image on DockerHub
+
+https://hub.docker.com/r/katherinas/nodejs2025q2-service-app
+
 ## Downloading
 
 ```
