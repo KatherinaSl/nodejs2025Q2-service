@@ -8,7 +8,7 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/KatherinaSl/nodejs2025Q2-service.git
 ```
 
 ## Installing NPM modules
@@ -27,6 +27,31 @@ After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
+## Running containers with Docker Compose
+
+```
+npm run docker:start
+```
+
+## Running scan for vulnerabilities
+
+To scan only apllication
+
+```
+npm run scan-app
+```
+
+To scan postgresSQl
+
+```
+npm run scan-postgres
+```
+
+To scan both 
+```
+npm run scan-all
+```
+
 ## Testing
 
 After application running open new terminal and enter:
@@ -41,18 +66,6 @@ To run only one of all test suites
 
 ```
 npm run test -- <path to suite>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
 ```
 
 ### Auto-fix and format
