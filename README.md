@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
+- Install [Docker](https://docs.docker.com/engine/install/)
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
 ### Application image on DockerHub
