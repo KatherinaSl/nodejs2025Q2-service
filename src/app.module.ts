@@ -1,10 +1,21 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { UserModule } from './users/user.module';
+import { PrismaService } from './prisma/prisma.service';
+import { TrackModule } from './tracks/track.module';
+import { ArtistModule } from './artists/artist.module';
+import { AlbumModule } from './albums/album.module';
+import { FavsModule } from './favorites/favorites.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [UserModule, TrackModule, ArtistModule, AlbumModule, FavsModule],
+  controllers: [],
+  providers: [
+    PrismaService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}
