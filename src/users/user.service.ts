@@ -11,6 +11,8 @@ import {
   UserDto,
 } from './user.interface';
 import { v4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
+import 'dotenv/config';
 
 @Injectable()
 export class UserService {
@@ -23,10 +25,15 @@ export class UserService {
   create(creds: CreateUserDto): Promise<UserDto> {
     const now = Date.now();
     const currentTime = Math.floor(now / 1000);
+    const hashPass = bcrypt.hashSync(
+      creds.password,
+      Number(process.env.CRYPT_SALT),
+    );
+
     const newUser = new User({
       id: v4(),
       login: creds.login,
-      password: creds.password,
+      password: hashPass,
       version: 1,
       createdAt: currentTime,
       updatedAt: currentTime,

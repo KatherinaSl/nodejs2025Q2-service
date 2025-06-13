@@ -32,7 +32,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 export class UnexpectedErrorFilter implements ExceptionFilter {
   constructor(private loggingService: LoggingService) {}
 
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: Error, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const request = context.getRequest<Request>();
     const response = context.getResponse<Response>();
@@ -45,6 +45,6 @@ export class UnexpectedErrorFilter implements ExceptionFilter {
       message: logMsg,
     });
 
-    this.loggingService.error(logMsg);
+    this.loggingService.error(exception.message);
   }
 }

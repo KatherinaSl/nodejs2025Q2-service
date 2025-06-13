@@ -42,6 +42,20 @@ export class UserDB {
     });
   }
 
+  async getUserWithPassByLogin(login: string): Promise<User> {
+    return await prisma.user.findUnique({
+      select: {
+        id: true,
+        login: true,
+        password: true,
+        version: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      where: { login },
+    });
+  }
+
   async updateUser(user: User): Promise<UserDto> {
     return await prisma.user.update({
       where: { id: user.id },

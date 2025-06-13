@@ -14,9 +14,17 @@ import { FavsModule } from './favorites/favorites.module';
 import { LoggerMiddleware } from './logging/logger.middleware';
 import { LoggingService } from './logging/logs.service';
 import { UnexpectedErrorFilter } from './errors/exceptionFilter';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, TrackModule, ArtistModule, AlbumModule, FavsModule],
+  imports: [
+    AuthModule,
+    UserModule,
+    TrackModule,
+    ArtistModule,
+    AlbumModule,
+    FavsModule,
+  ],
   controllers: [],
   providers: [
     UnexpectedErrorFilter,
