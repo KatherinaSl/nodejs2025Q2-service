@@ -8,7 +8,9 @@ import { JwtModule } from '@nestjs/jwt';
 import 'dotenv/config';
 
 @Module({
-  imports: [JwtModule.register({ secret: process.env.JWT_SECRET_KEY })],
+  imports: [
+    JwtModule.register({ global: true, secret: process.env.JWT_SECRET_KEY }),
+  ],
   controllers: [AuthController],
   providers: [UserService, AuthService, PrismaService, UserDB],
 })

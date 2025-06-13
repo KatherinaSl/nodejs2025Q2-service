@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -22,7 +23,12 @@ export class UserService {
     return this.userDB.getUsers();
   }
 
-  create(creds: CreateUserDto): Promise<UserDto> {
+  async create(creds: CreateUserDto): Promise<UserDto> {
+    const oldUser = await this.userDB.getUserWithPassByLogin(creds.login);
+    if (oldUser) {
+      throw new BadRequestException('User with such login already exists');
+    }
+
     const now = Date.now();
     const currentTime = Math.floor(now / 1000);
     const hashPass = bcrypt.hashSync(
@@ -60,14 +66,17 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    if (user.password !== dto.oldPassword) {
+    if (!bcrypt.compareSync(dto.oldPassword, user.password)) {
       throw new ForbiddenException('Old password is wrong');
     }
 
     const now = Date.now();
     const currentTime = Math.floor(now / 1000);
-
-    user.password = dto.newPassword;
+    const newPassword = bcrypt.hashSync(
+      dto.newPassword,
+      Number(process.env.CRYPT_SALT),
+    );
+    user.password = newPassword;
     user.version++;
     user.updatedAt = currentTime + 1;
 
