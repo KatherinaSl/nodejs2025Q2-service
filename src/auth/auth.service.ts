@@ -22,20 +22,6 @@ export class AuthService {
 
     if (user && bcrypt.compareSync(userDto.password, user.password)) {
       return this.createTokens(user.id, user.login);
-      // const accessToken = this.jwtService.sign(
-      //   { userId: user.id, login: user.login },
-      //   { expiresIn: process.env.TOKEN_EXPIRE_TIME },
-      // );
-
-      // const refreshToken = this.jwtService.sign(
-      //   { userId: user.id, login: user.login },
-      //   {
-      //     expiresIn: process.env.TOKEN_REFRESH_EXPIRE_TIME,
-      //     secret: process.env.JWT_SECRET_REFRESH_KEY,
-      //   },
-      // );
-
-      // return { accessToken, refreshToken };
     } else {
       throw new ForbiddenException(
         "No user with such login, password doesn't match actual one",
