@@ -3,7 +3,9 @@ import { CreateUserDto, UserDto } from 'src/users/user.interface';
 import { AuthService } from './auth.service';
 import { UserService } from 'src/users/user.service';
 import { RefreshTokenDto } from './refresh-token.dto';
+import { Public } from 'src/guards/public.decorator';
 
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(
