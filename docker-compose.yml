@@ -13,6 +13,8 @@ services:
     depends_on:
       - postgres_db
     restart: always
+    volumes:
+      - ./logs:/app/logs
     develop:
       watch:
         - action: sync

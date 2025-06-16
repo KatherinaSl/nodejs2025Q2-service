@@ -24,7 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message: exception.message,
     });
 
-    this.loggingService.error(exception.message);
+    this.loggingService.error(exception.message, exception.stack);
   }
 }
 
@@ -45,6 +45,6 @@ export class UnexpectedErrorFilter implements ExceptionFilter {
       message: logMsg,
     });
 
-    this.loggingService.error(exception.message);
+    this.loggingService.error(exception.message, exception.stack);
   }
 }

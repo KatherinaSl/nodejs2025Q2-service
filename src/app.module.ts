@@ -12,9 +12,9 @@ import { ArtistModule } from './artists/artist.module';
 import { AlbumModule } from './albums/album.module';
 import { FavsModule } from './favorites/favorites.module';
 import { LoggerMiddleware } from './logging/logger.middleware';
-import { LoggingService } from './logging/logs.service';
 import { UnexpectedErrorFilter } from './errors/exceptionFilter';
 import { AuthModule } from './auth/auth.module';
+import { LogsModule } from './logging/logs.module';
 
 @Module({
   imports: [
@@ -24,11 +24,11 @@ import { AuthModule } from './auth/auth.module';
     ArtistModule,
     AlbumModule,
     FavsModule,
+    LogsModule,
   ],
   controllers: [],
   providers: [
     UnexpectedErrorFilter,
-    LoggingService,
     PrismaService,
     {
       provide: APP_INTERCEPTOR,
